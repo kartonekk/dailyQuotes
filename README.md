@@ -85,5 +85,3 @@ if quote:
 ### About the Project
 
 The API is built using **Google Apps Script**, which allows it to function as a simple web service without the need for a dedicated server. You can view and fork the source code for the API itself in the script editor.
-
-*This README was generated with a little help from me, an AI assistant.*
