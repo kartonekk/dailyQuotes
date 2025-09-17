@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Quotes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Dynamically resize text */
+        #quote-content {
+            font-size: 8vw; /* Initial large font size, will be adjusted by JS */
+            line-height: 1.1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-height: 80vh; /* Prevents quote from taking up the entire screen height */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-grow: 1; /* Allow content to grow and take available space */
+        }
+        
+        .quote-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .quote-and-author {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div class="relative min-h-screen flex flex-col items-center justify-center p-4 quote-container">
+        <h1 class="text-3xl md:text-5xl font-bold absolute top-4 left-4">Daily Quotes</h1>
+
+        <div class="quote-and-author flex flex-col items-center justify-center w-full max-w-5xl px-4">
+            <div id="quote-content" class="font-bold">
+                <p id="quote-text">Loading today's quote...</p>
+            </div>
+            <p id="quote-author" class="text-xl md:text-2xl mt-2 text-gray-400"></p>
+        </div>
+
+        <a href="#code-snippets" class="absolute bottom-8 left-1/2 -translate-x-1/2">
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                See Code Examples
+            </button>
+        </a>
+    </div>
+
+---
+
+<div id="code-snippets" class="bg-gray-800 py-16 px-4">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center text-indigo-400">Example API Implementations</h2>
+        
+        <div class="mb-12">
+            <h3 class="text-2xl font-semibold mb-4 text-indigo-300">JavaScript</h3>
+            <pre class="bg-gray-900 p-6 rounded-lg overflow-x-auto text-sm md:text-base"><code>
+&lt;script&gt;
+const getDailyQuote = async () => {
+  try {
+    const res = await fetch(
+      'https://script.google.com/macros/s/AKfycbyU2tuTOsLmynjo7oKCUwT4UAXrvfWZSHgnLDqrtK_e1aY_1HyL2LeyBqn5VscEHL-kVg/exec?action=getQuote&key=gC0aCZdHkFp45OIAQH7qDOL4TaCzeR'
+    );
+    if (!res.ok) throw new Error(res.status);
+    return await res.json();
+  } catch (err) {
+    console.error('Error fetching daily quote:', err);
+    return null;
+  }
+};
+
+// Example usage:
+getDailyQuote().then(q => {
+  if (q) {
+    console.log(`${q.quote} — ${q.author} (${q.date})`);
+  }
+});
+&lt;/script&gt;
+            </code></pre>
+        </div>
+        
+        <div>
+            <h3 class="text-2xl font-semibold mb-4 text-indigo-300">Python</h3>
+            <pre class="bg-gray-900 p-6 rounded-lg overflow-x-auto text-sm md:text-base"><code>
+import requests
+
+def get_daily_quote():
+    """Fetches the daily quote from the API."""
+    url = "https://script.google.com/macros/s/AKfycbyU2tuTOsLmynjo7oKCUwT4UAXrvfWZSHgnLDqrtK_e1aY_1HyL2LeyBqn5VscEHL-kVg/exec"
+    params = {
+        "action": "getQuote",
+        "key": "gC0aCZdHkFp45OIAQH7qDOL4TaCzeR"
+    }
+    
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()  # Raise an exception for bad status codes
+        
+        quote_data = response.json()
+        return quote_data
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching daily quote: {e}")
+        return None
+
+# Example usage:
+quote = get_daily_quote()
+if quote:
+    print(f"{quote['quote']} — {quote['author']} ({quote['date']})")
+            </code></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    const quoteText = document.getElementById('quote-text');
+    const quoteAuthor = document.getElementById('quote-author');
+    const quoteContentContainer = document.getElementById('quote-content');
+
+    const getDailyQuote = async () => {
+        try {
+            const res = await fetch(
+                'https://script.google.com/macros/s/AKfycbyU2tuTOsLmynjo7oKCUwT4UAXrvfWZSHgnLDqrtK_e1aY_1HyL2LeyBqn5VscEHL-kVg/exec?action=getQuote&key=gC0aCZdHkFp45OIAQH7qDOL4TaCzeR'
+            );
+            if (!res.ok) throw new Error(res.status);
+            return await res.json();
+        } catch (err) {
+            console.error('Error fetching daily quote:', err);
+            return null;
+        }
+    };
+
+    const resizeText = () => {
+        const parentWidth = quoteContentContainer.clientWidth;
+        const parentHeight = quoteContentContainer.clientHeight;
+        
+        // Reset font size to measure accurately
+        quoteText.style.fontSize = '';
+        
+        const textWidth = quoteText.scrollWidth;
+        const textHeight = quoteText.scrollHeight;
+        
+        if (textWidth > parentWidth || textHeight > parentHeight) {
+            let widthRatio = parentWidth / textWidth;
+            let heightRatio = parentHeight / textHeight;
+            let ratio = Math.min(widthRatio, heightRatio);
+            
+            let currentFontSize = parseFloat(window.getComputedStyle(quoteText, null).getPropertyValue('font-size'));
+            
+            let newFontSize = currentFontSize * ratio;
+            
+            // Limit font size to a reasonable range
+            quoteText.style.fontSize = Math.min(Math.max(newFontSize, 16), 80) + 'px';
+        }
+    };
+
+    const displayQuote = async () => {
+        const quote = await getDailyQuote();
+        if (quote) {
+            quoteText.textContent = `“${quote.quote}”`;
+            quoteAuthor.textContent = `— ${quote.author}`;
+            requestAnimationFrame(() => {
+                resizeText();
+            });
+        } else {
+            quoteText.textContent = 'Failed to load quote. Please try again later.';
+            quoteAuthor.textContent = '';
+        }
+    };
+
+    // Initial load
+    displayQuote();
+
+    // Re-size on window resize
+    window.addEventListener('resize', resizeText);
+</script>
+</body>
+</html>
