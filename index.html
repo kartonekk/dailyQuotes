@@ -14,17 +14,17 @@
 
         /* Dynamically resize text */
         #quote-content {
-            font-size: 8vw; /* Initial large font size, will be adjusted by JS */
+            font-size: 8vw;
             line-height: 1.1;
             word-wrap: break-word;
             overflow-wrap: break-word;
-            max-height: 80vh; /* Prevents quote from taking up the entire screen height */
+            max-height: 80vh;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            flex-grow: 1; /* Allow content to grow and take available space */
+            flex-grow: 1;
         }
         
         .quote-container {
@@ -43,6 +43,59 @@
             justify-content: center;
             flex-grow: 1;
         }
+
+        /* Adjust the margin for the author line */
+        #quote-author {
+            margin-top: 25px;
+        }
+
+        /* Code block container styling */
+        .code-block-container {
+            background-color: #1a202c; /* Tailwind's gray-900 */
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Code block header styling */
+        .code-block-header {
+            background-color: #2d3748; /* Tailwind's gray-800 */
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Copy button styling */
+        .copy-button {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #d1d5db; /* Tailwind's gray-300 */
+            transition: color 0.3s;
+        }
+
+        .copy-button:hover {
+            color: #ffffff;
+        }
+
+        .copy-button svg {
+            width: 1rem;
+            height: 1rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Code content styling */
+        .code-content pre {
+            padding: 1rem;
+            overflow-x: auto;
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -54,7 +107,7 @@
             <div id="quote-content" class="font-bold">
                 <p id="quote-text">Loading today's quote...</p>
             </div>
-            <p id="quote-author" class="text-xl md:text-2xl mt-2 text-gray-400"></p>
+            <p id="quote-author" class="text-xl md:text-2xl text-gray-400"></p>
         </div>
 
         <a href="#code-snippets" class="absolute bottom-8 left-1/2 -translate-x-1/2">
@@ -64,15 +117,25 @@
         </a>
     </div>
 
----
-
 <div id="code-snippets" class="bg-gray-800 py-16 px-4">
     <div class="max-w-4xl mx-auto">
         <h2 class="text-3xl font-bold mb-8 text-center text-indigo-400">Example API Implementations</h2>
         
         <div class="mb-12">
-            <h3 class="text-2xl font-semibold mb-4 text-indigo-300">JavaScript</h3>
-            <pre class="bg-gray-900 p-6 rounded-lg overflow-x-auto text-sm md:text-base"><code>
+            <div class="code-block-container">
+                <div class="code-block-header">
+                    <span class="text-gray-400">JavaScript</span>
+                    <button class="copy-button" onclick="copyCode(this)">
+                        <span>Copy</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5h6a2 2 0 012 2v10a2 2 0 01-2 2H8a2 2 0 01-2-2V7a2 2 0 012-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 5L20 9"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 9L20 5"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre><code>
 &lt;script&gt;
 const getDailyQuote = async () => {
   try {
@@ -94,12 +157,26 @@ getDailyQuote().then(q => {
   }
 });
 &lt;/script&gt;
-            </code></pre>
+                    </code></pre>
+                </div>
+            </div>
         </div>
         
         <div>
-            <h3 class="text-2xl font-semibold mb-4 text-indigo-300">Python</h3>
-            <pre class="bg-gray-900 p-6 rounded-lg overflow-x-auto text-sm md:text-base"><code>
+            <div class="code-block-container">
+                <div class="code-block-header">
+                    <span class="text-gray-400">Python</span>
+                    <button class="copy-button" onclick="copyCode(this)">
+                        <span>Copy</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5h6a2 2 0 012 2v10a2 2 0 01-2 2H8a2 2 0 01-2-2V7a2 2 0 012-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 5L20 9"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 9L20 5"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre><code>
 import requests
 
 def get_daily_quote():
@@ -124,8 +201,16 @@ def get_daily_quote():
 quote = get_daily_quote()
 if quote:
     print(f"{quote['quote']} — {quote['author']} ({quote['date']})")
-            </code></pre>
+                    </code></pre>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <div class="text-center mt-12">
+        <a href="https://github.com/kartonekk/dailyQuotes" target="_blank" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+            View this project on GitHub
+        </a>
     </div>
 </div>
 
@@ -175,7 +260,7 @@ if quote:
         const quote = await getDailyQuote();
         if (quote) {
             quoteText.textContent = `“${quote.quote}”`;
-            quoteAuthor.textContent = `— ${quote.author}`;
+            quoteAuthor.textContent = `— ${quote.author} (${quote.date})`;
             requestAnimationFrame(() => {
                 resizeText();
             });
@@ -183,6 +268,23 @@ if quote:
             quoteText.textContent = 'Failed to load quote. Please try again later.';
             quoteAuthor.textContent = '';
         }
+    };
+
+    // Copy to clipboard function
+    const copyCode = (button) => {
+        const codeBlock = button.parentElement.parentElement.querySelector('code');
+        const textToCopy = codeBlock.textContent;
+        
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            // Success feedback
+            const originalText = button.querySelector('span').textContent;
+            button.querySelector('span').textContent = 'Copied!';
+            setTimeout(() => {
+                button.querySelector('span').textContent = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
     };
 
     // Initial load
