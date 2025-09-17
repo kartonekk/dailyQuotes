@@ -260,7 +260,7 @@ if quote:
         const quote = await getDailyQuote();
         if (quote) {
             quoteText.textContent = `“${quote.quote}”`;
-            quoteAuthor.textContent = `— ${quote.author} (${quote.date})`;
+            quoteAuthor.textContent = `— ${quote.author}`;
             requestAnimationFrame(() => {
                 resizeText();
             });
